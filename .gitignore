@@ -1,0 +1,12 @@
+# Binaries
+bin/
+ctx
+
+# OS generated files
+.DS_Store
+
+# Local test data (if you saved any .json in the project root)
+*.json
+
+# Go workspace file
+go.work
