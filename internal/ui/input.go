@@ -17,13 +17,12 @@ func CollectProjectData(name string) context.ProjectContext {
 		Name:      name,
 		CreatedAt: time.Now(),
 	}
+	ctx.Directory, ctx.Branch = context.GetCurrentState()
 
-	// --- Links Loop ---
 	fmt.Println("\n--- Step 1: Add Links (Jira, GitHub, Docs) ---")
 	fmt.Println("(Press Enter on an empty line to move to Terminals)")
 	ctx.Links = collectResources("Link URL")
 
-	// --- Terminals Loop ---
 	fmt.Println("\n--- Step 2: Add Terminal Context (Commands/Tasks) ---")
 	fmt.Println("(Press Enter on an empty line to finish)")
 	ctx.Terminals = collectResources("Terminal Task/Command")
