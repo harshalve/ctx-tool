@@ -10,33 +10,63 @@ import (
 
 func RestoreProjectData(ctx context.ProjectContext) {
 	fmt.Printf("\n🚀 Restoring Context: %s\n", ctx.Name)
-	fmt.Printf("🌿 Branch:    %s\n", ctx.Branch)
-	fmt.Printf("📍 Directory: %s\n", ctx.Directory)
+	fmt.Println("------------------------------------------")
+	fmt.Printf("📍 Directory:  file://%s\n", ctx.Directory)
 	fmt.Println("------------------------------------------")
 
-	// 1. Open Browser Links
-	if len(ctx.Links) > 0 {
-		fmt.Println("\n🔗 Opening Links:")
-		for _, link := range ctx.Links {
-			fmt.Printf("  - Opening: %s\n", link.Value)
-			if link.Notes != "" {
-				fmt.Printf("    📝 Note: %s\n", link.Notes)
-			}
-			openBrowser(link.Value)
-		}
+	// 1. System/Git Setup
+	handleBranchSwitch(ctx.Branch, ctx.Directory)
+
+	// 2. Browser Links
+	restoreLinks(ctx.Links)
+
+	// 3. Terminal/Task Context
+	displayTerminalContext(ctx.Terminals)
+
+	fmt.Println("\n✅ Welcome back! Your context is rehydrated.")
+}
+
+func handleBranchSwitch(branch, dir string) {
+	if branch == "" || branch == "none" || branch == "n/a (not a git repo)" {
+		return
 	}
 
-	// 2. Display Terminal Context
-	if len(ctx.Terminals) > 0 {
-		fmt.Println("\n💻 Terminal Context & Tasks:")
-		for _, term := range ctx.Terminals {
-			fmt.Printf("  - Command: %s\n", term.Value)
-			if term.Notes != "" {
-				fmt.Printf("    📝 Note: %s\n", term.Notes)
-			}
+	fmt.Printf("🌿 Target Branch: %s\n", branch)
+	cmd := exec.Command("git", "checkout", branch)
+	cmd.Dir = dir
+
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("⚠️  Could not auto-switch branch (check for uncommitted changes)\n")
+	} else {
+		fmt.Printf("✅ Switched to branch: %s\n", branch)
+	}
+}
+
+func restoreLinks(links []context.Resource) {
+	if len(links) == 0 {
+		return
+	}
+	fmt.Println("\n🔗 Opening Links:")
+	for _, link := range links {
+		fmt.Printf("  - %s\n", link.Value)
+		if link.Notes != "" {
+			fmt.Printf("    📝 %s\n", link.Notes)
+		}
+		openBrowser(link.Value)
+	}
+}
+
+func displayTerminalContext(terms []context.Resource) {
+	if len(terms) == 0 {
+		return
+	}
+	fmt.Println("\n💻 Terminal Context & Tasks:")
+	for _, term := range terms {
+		fmt.Printf("  - Command: %s\n", term.Value)
+		if term.Notes != "" {
+			fmt.Printf("    📝 %s\n", term.Notes)
 		}
 	}
-	fmt.Println("\n✅ Welcome back! Your context is rehydrated.")
 }
 
 func openBrowser(url string) {
