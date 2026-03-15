@@ -44,8 +44,9 @@ The project uses a `Makefile` to maintain high code quality. The installation pr
 git clone [https://github.com/harshalve/ctx-tool.git](https://github.com/harshalve/ctx-tool.git)
 cd ctx-tool
 make install
+```
 
-## Shell Integration
+## 🐚 Shell Integration
 
 To allow `ctx` to change your terminal's directory, add this helper function to your `~/.zshrc` or `~/.bashrc`:
 
@@ -63,9 +64,9 @@ ctx-go() {
         echo "⚠️  Note: Project directory not found, staying in current folder."
     fi
 }
+```
 
-
-## Usage
+## 📖 Usage
 
 ### Save a Context
 Navigate to your project directory and run:
@@ -92,7 +93,7 @@ ls ~/.ctx
 ```
 
 
-## Technical Architecture
+## 🏗️ Technical Architecture
 
 - Language: Go
 - Data Storage: JSON files in `~/.ctx`
@@ -101,7 +102,7 @@ ls ~/.ctx
     - Uses `text/tabwriter` for formatting the output.
 
 
-## Contributing
+## 🤝 Contributing
 I follow an industry-standard development lifecycle.
 1. Create a feature branch (git checkout -b feat/my-feature)
 2. Make changes
