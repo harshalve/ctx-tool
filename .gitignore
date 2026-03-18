@@ -1,6 +1,6 @@
 # Binaries
 bin/
-ctx
+ctx-tool
 
 # OS generated files
 .DS_Store
